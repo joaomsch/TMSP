@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 class Program
@@ -19,6 +19,7 @@ C        AAAAA   V   V   AAAAA   L        I   EEEE   RRRR
 C        A   A   V   V   A   A   L        I   E      R  R  
  CCCC    A   A    VVV    A   A   LLLLL   III  EEEEE  R   R
 ";
+        Console.WriteLine(Convert.ToChar(97 + 0));
 
         Console.WriteLine(cavalierArt);
         Thread.Sleep(1500);
@@ -142,28 +143,28 @@ C        A   A   V   V   A   A   L        I   E      R  R
     {
         Console.Clear();
 
-        // Afficher les numéros de colonnes
+        // Afficher les lettres de A à H en haut du plateau
         Console.Write("    ");
-        for (int i = 1; i <= taille; i++)
+        for (int i = 0; i < taille; i++)
         {
-            Console.Write(i + "   ");
+            // Affiche les lettres de A à H
+            Console.Write("  " + (char)(65 + i) + " ");
         }
         Console.WriteLine();
 
         for (int i = 0; i < taille; i++)
         {
-            // Affichage des numéros de lignes
-            Console.Write(i + 1 + "   ");
-
-            // Affichage de la ligne horizontale
+            // Affichage des lignes horizontales
+            Console.Write("    ");
             for (int j = 0; j < taille; j++)
             {
                 Console.Write("╬═══");
             }
             Console.WriteLine("╣");
 
-            // Affichage des cases avec les lignes verticales
-            Console.Write("    ");
+            // Affichage des numéros de lignes dans l'ordre croissant (de 1 à 8)
+            Console.Write("  " + (i + 1) + " "); // Inverser les numéros de ligne
+
             for (int j = 0; j < taille; j++)
             {
                 // Colorier la case contenant le cavalier en rouge
