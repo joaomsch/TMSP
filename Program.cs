@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 class Program
@@ -9,19 +10,18 @@ class Program
     // Définir les mouvements du cavalier (les déplacements possibles)
     static int[] deplacementsCavalierX = new int[] { 2, 2, -2, -2, 1, 1, -1, -1 };
     static int[] deplacementsCavalierY = new int[] { 1, -1, 1, -1, 2, -2, 2, -2 };
+    static List<string> visitedPositions = new List<string>();  // Liste pour suivre les positions visitées
 
     static void Main()
     {
-        string cavalierArt = @"
- CCCC    AAAAA   V   V   AAAAA   L       III  EEEEE  RRRR  
-C        A   A   V   V   A   A   L        I   E      R   R 
-C        AAAAA   V   V   AAAAA   L        I   EEEE   RRRR  
-C        A   A   V   V   A   A   L        I   E      R  R  
- CCCC    A   A    VVV    A   A   LLLLL   III  EEEEE  R   R
+        string cavaliertitre = @"
+    █       ██████          █████    █████   █   █   █████   █       ███  ██████  ████  
+    █       █               █        █   █   █   █   █   █   █        █   █       █   █ 
+    █       ████            █        █████   █   █   █████   █        █   ████    ████
+    █       █               █        █   █   █   █   █   █   █        █   █       █   █  
+    █████   ██████          █████    █   █    ███    █   █   █████   ███  ██████  █    █
 ";
-        Console.WriteLine(Convert.ToChar(97 + 0));
-
-        Console.WriteLine(cavalierArt);
+        Console.WriteLine(cavaliertitre);
         Thread.Sleep(1500);
 
         Console.WriteLine("Voulez-vous jouer au jeu du cavalier? (Oui/Non)");
@@ -41,7 +41,6 @@ C        A   A   V   V   A   A   L        I   E      R  R
         // Remplissage du plateau avec des cases vides
         for (int i = 0; i < taille; i++)
         {
-            // Chaque case est initialisée à un espace vide
             for (int j = 0; j < taille; j++)
             {
                 plateau[i, j] = ' ';
@@ -49,11 +48,12 @@ C        A   A   V   V   A   A   L        I   E      R  R
         }
 
         // Demander à l'utilisateur où placer le pion cavalier
-        Console.WriteLine("Entrez la position de départ du cavalier (ex: 3 4 pour ligne 3, colonne 4) :");
-        // Réduire de 1 pour correspondre à l'index du tableau
-        int x = ObtenirCoordonneeValide("Ligne") - 1;
-        // Réduire de 1 pour correspondre à l'index du tableau
-        int y = ObtenirCoordonneeValide("Colonne") - 1;
+        Console.WriteLine("Entrez la position de départ du cavalier (ex: A1, B3, etc.) :");
+        string position = ObtenirPositionValide();
+        visitedPositions.Add(position);
+        // Convertir la notation de type A1 en indices de tableau
+        int x = taille - (position[1] - '0');  // Ligne, inversée (1 devient 7)
+        int y = position[0] - 'A';             // Colonne (A devient 0)
 
         // Placer le pion cavalier dans la position choisie
         plateau[x, y] = 'C';
@@ -65,8 +65,11 @@ C        A   A   V   V   A   A   L        I   E      R  R
         while (true)
         {
             Console.WriteLine("\nDéplacez le cavalier !");
-            int deplacementX = ObtenirDeplacementValide("Ligne") - 1;
-            int deplacementY = ObtenirDeplacementValide("Colonne") - 1;
+            string deplacement = ObtenirPositionValide();
+
+            // Convertir la notation du déplacement en indices de tableau
+            int deplacementX = taille - (deplacement[1] - '0');
+            int deplacementY = deplacement[0] - 'A';
 
             // Vérifier si le mouvement est valide
             bool mouvementValide = false;
@@ -90,10 +93,33 @@ C        A   A   V   V   A   A   L        I   E      R  R
                 // Mettre à jour la nouvelle position du cavalier
                 x = deplacementX;
                 y = deplacementY;
+
+                bool notUsedBefore = true;
+                foreach (string dataP in visitedPositions)
+                {
+                    if (dataP == deplacement)
+                    {
+                        notUsedBefore = false;
+                        break;
+                    }
+                }
+
+                if (notUsedBefore)
+                {
+                    visitedPositions.Add(deplacement);  // Marquer cette position comme visitée
+                }
+                else
+                {
+                    // Si le cavalier revient sur une case déjà visitée
+                    Console.WriteLine("PERDU ! Vous avez déjà visité cette case.");
+                    break;
+                }
+
                 plateau[x, y] = 'C';
 
                 // Afficher le plateau mis à jour
                 AfficherPlateau(x, y);
+                //Console.WriteLine(string.Join(";", visitedPositions));
             }
             else
             {
@@ -102,38 +128,22 @@ C        A   A   V   V   A   A   L        I   E      R  R
         }
     }
 
-    // Fonction pour obtenir une coordonnée valide
-    static int ObtenirCoordonneeValide(string type)
+    // Fonction pour obtenir une position valide sous forme de notation (ex: A1, B3)
+    static string ObtenirPositionValide()
     {
-        int coordonnee;
         while (true)
         {
-            Console.Write($"Entrez la {type} (entre 1 et {taille}): ");
-            if (int.TryParse(Console.ReadLine(), out coordonnee) && coordonnee >= 1 && coordonnee <= taille)
-            {
-                return coordonnee;
-            }
-            else
-            {
-                Console.WriteLine($"Coordonnée invalide. Veuillez entrer un nombre entre 1 et {taille}.");
-            }
-        }
-    }
+            string position = Console.ReadLine().ToUpper();
 
-    // Fonction pour obtenir un déplacement valide du cavalier
-    static int ObtenirDeplacementValide(string type)
-    {
-        int deplacement;
-        while (true)
-        {
-            Console.Write($"Entrez la {type} pour le déplacement du cavalier (entre 1 et {taille}): ");
-            if (int.TryParse(Console.ReadLine(), out deplacement) && deplacement >= 1 && deplacement <= taille)
+            if (position.Length == 2 &&
+                position[0] >= 'A' && position[0] <= 'H' &&
+                position[1] >= '1' && position[1] <= '8')
             {
-                return deplacement;
+                return position;
             }
             else
             {
-                Console.WriteLine($"Mouvement invalide. Veuillez entrer un nombre entre 1 et {taille}.");
+                Console.WriteLine("Position invalide. Entrez une position valide (ex: A1, B3, etc.).");
             }
         }
     }
@@ -147,7 +157,6 @@ C        A   A   V   V   A   A   L        I   E      R  R
         Console.Write("    ");
         for (int i = 0; i < taille; i++)
         {
-            // Affiche les lettres de A à H
             Console.Write("  " + (char)(65 + i) + " ");
         }
         Console.WriteLine();
@@ -162,13 +171,13 @@ C        A   A   V   V   A   A   L        I   E      R  R
             }
             Console.WriteLine("╣");
 
-            // Affichage des numéros de lignes dans l'ordre croissant (de 1 à 8)
-            Console.Write("  " + (i + 1) + " "); // Inverser les numéros de ligne
+            // Affichage des numéros de lignes dans l'ordre décroissant (de 1 à 8)
+            Console.Write("  " + (8 - i) + " ");
 
             for (int j = 0; j < taille; j++)
             {
-                // Colorier la case contenant le cavalier en rouge
-                if (i == cavalierX && j == cavalierY)
+                // Colorier les cases visitées en rouge
+                if (visitedPositions.Contains($"{(char)(j + 'A')}{8 - i}"))
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write("║ " + plateau[i, j] + " ");
@@ -183,7 +192,8 @@ C        A   A   V   V   A   A   L        I   E      R  R
                         int nouvelleposX = cavalierX + deplacementsCavalierX[k];
                         int nouvelleposY = cavalierY + deplacementsCavalierY[k];
 
-                        if (i == nouvelleposX && j == nouvelleposY)
+                        // Vérifier si la case est un déplacement valide
+                        if (i == nouvelleposX && j == nouvelleposY && !visitedPositions.Contains($"{(char)(j + 'A')}{8 - i}"))
                         {
                             mouvementValide = true;
                             break;
@@ -192,7 +202,7 @@ C        A   A   V   V   A   A   L        I   E      R  R
 
                     if (mouvementValide)
                     {
-                        Console.BackgroundColor = ConsoleColor.Blue;  // Colorier les cases possibles en bleu
+                        Console.BackgroundColor = ConsoleColor.Blue;
                         Console.Write("║ " + plateau[i, j] + " ");
                         Console.ResetColor();
                     }
