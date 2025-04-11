@@ -1,0 +1,15 @@
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\bin\Debug\net6.0\Cavaliertmsp.exe
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\bin\Debug\net6.0\Cavaliertmsp.deps.json
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\bin\Debug\net6.0\Cavaliertmsp.runtimeconfig.json
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\bin\Debug\net6.0\Cavaliertmsp.dll
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\bin\Debug\net6.0\Cavaliertmsp.pdb
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.csproj.AssemblyReference.cache
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.GeneratedMSBuildEditorConfig.editorconfig
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.AssemblyInfoInputs.cache
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.AssemblyInfo.cs
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.csproj.CoreCompileInputs.cache
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.dll
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\refint\Cavaliertmsp.dll
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.pdb
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\Cavaliertmsp.genruntimeconfig.cache
+C:\msig24\prog\Projet C sharp\Cavaliertmsp\obj\Debug\net6.0\ref\Cavaliertmsp.dll
